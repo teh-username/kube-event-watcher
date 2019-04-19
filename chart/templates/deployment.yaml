@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.name }}
+  namespace : {{ .Values.namespaceDeploy }}
+spec:
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+      namespace : {{ .Values.namespaceDeploy }}
+    spec:
+      containers:
+      - name: {{ .Values.name }}
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        env:
+        - name: NAMESPACE
+          value: "{{ .Values.namespaceWatch }}"
+      {{- if .Values.watchers.pods }}
+        - name: WATCH_PODS
+          value: "True"
+      {{- end -}}
+      {{- if .Values.watchers.deployments }}
+        - name: WATCH_DEPLOYMENTS
+          value: "True"
+      {{- end -}}
+      {{- if .Values.watchers.services }}
+        - name: WATCH_SERVICES
+          value: "True"
+      {{- end -}}
+      {{- if .Values.watchers.configmaps }}
+        - name: WATCH_CONFIGMAPS
+          value: "True"
+      {{- end -}}
+      {{- if .Values.watchers.secrets }}
+        - name: WATCH_SECRETS
+          value: "True"
+      {{- end -}}
+      {{- if .Values.watchers.serviceaccounts }}
+        - name: WATCH_SERVICEACCOUNTS
+          value: "True"
+      {{- end }}
+      serviceAccountName: {{ if .Values.rbac.create }}{{.Values.name }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}

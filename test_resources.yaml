@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug
+  labels:
+    app: debug
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 5
+      maxUnavailable: 2
+  selector:
+    matchLabels:
+      app: debug
+  template:
+    metadata:
+      labels:
+        app: debug
+    spec:
+      containers:
+      - name: debug
+        image: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug_2
+  labels:
+    app: debug_2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: debug_2
+  template:
+    metadata:
+      labels:
+        app: debug_2
+    spec:
+      containers:
+      - name: debug_2
+        image: busybox
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: svc
+spec:
+  selector:
+    app: debug
+  ports:
+  - port: 80
+    targetPort: 8080

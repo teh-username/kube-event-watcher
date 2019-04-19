@@ -1,0 +1,31 @@
+# container name
+name: kube-event-watcher
+
+# docker image
+image: tehusername/kube-event-watcher
+
+# docker image tag
+imageTag: "0.1"
+
+# number of replicas to deploy
+replicas: 1
+
+# namespace on where to deploy
+namespaceDeploy: default
+
+# namespace to watch
+namespaceWatch: default
+
+# create service account with permission to list and kill pods
+rbac:
+  create: true
+  serviceAccountName: kube-event-watcher
+
+# objects to watch
+watchers:
+  pods: false
+  deployments: true
+  services: true
+  configmaps: false
+  secrets: false
+  serviceaccounts: false
