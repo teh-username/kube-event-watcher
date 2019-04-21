@@ -1,23 +1,30 @@
 # kube-event-watcher
-// TBD
+
+A Python application that watches for changes on various Kubernetes objects. Learn more about the design [here](https://www.laroberto.com/kube-event-watcher/)!
 
 ## Installation
 
-`kubectl apply -f <(helm template chart/)`
+A helm chart is already provided along with proper RBAC so installing is as easy as:
+
+`kubectl apply -f <(helm template chart)`
+
+Make sure you update the `values.yaml` to suit your use case.
+
+Here's how it looks in action:
 
 ![sample](./docs/sample.png)
 
 ## Building from source
 
+If you need to edit the source code, run the following commands to have the necessary dependencies:
+
 ```
 virtualenv -p python3 venv
 source venv/bin/activate
 pip install -r requirements.txt
-python app/main.py
 ```
 
-## Usage
-// TBD
+The code already accounts for runtime either inside or outside the cluster (assuming `kubectl` is configured correctly) so you can run it straight from the console.
 
 ## Configuration
 
